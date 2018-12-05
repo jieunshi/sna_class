@@ -155,6 +155,7 @@ s
 Sometimes we want to first split data into groups and then compute summaries for each group. 
 For example, we may want to compute the average and standard deviation for newspapers, TV, and online. For this we will use, the "group_by" operator. 
 
+
 ```{r,eval=FALSE}
 q <- dat %>%
   group_by(type.label) %>%
@@ -162,3 +163,16 @@ q <- dat %>%
 
 q 
 ```
+
+### Visualization with ggplot2 
+
+you can do this with ggplot2. 
+
+```{r,eval=FALSE}
+library(ggplot2)
+
+ggplot(dat, aes(x=type.label, y=audience.size)) +geom_point()
+
+```
+
+end 
