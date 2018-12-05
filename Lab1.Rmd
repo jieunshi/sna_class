@@ -1,0 +1,70 @@
+---
+title: "Lab 1"
+author: "JS"
+date: "12/5/2018"
+DUE DATE : "1/12/2019 (Saturday)"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## This assignment is about importing data, reporting very basic descriptive statistics, and visualizating the relationships between variables. 
+
+## First save the dataset ("teacher_data.csv"") in your local folder. The dataset can be found at https://github.com/jieunshi/sna_class 
+
+## Next, identify path to your file so that we can tell R to find the dataset and read it. 
+
+
+```{r,eval=FALSE}
+
+setwd("put_path_to_your_dataset_here")
+
+```
+
+## Some information about the dataset: The teacher_data contains how 66 teachers across three different middle schools perceive about a new curriculum and whether they are willing to try out a new program.  The "years" variable refers to each teacher's teaching expreince, "students" indicate the number of students that they teach, classes refer to the number of classes they teach.  The advantage variable and the ease of use variable measure the extent to which teachers  think the new program is advantageous to students, and the extent to which the program is easy to use. These two variables were measured on a scale of 1-5, with 5 being the most positive. 
+"Implemented" measures whether they have actually implmented at least one module by the end of the semester.  "lessons" measure the number of lessons they were willing to try in their classroom 
+at the time of fillingout the survey.  
+
+
+```{r,eval=FALSE}
+
+dat <-read.csv("teacher_data.csv", header=TRUE, sep="\t", colClasses=c("id"="character", "implemented"="factor"))
+
+```
+
+
+# Question 1 
+Compute the mean and standard deviation of each variable (years, students, classes, advantage, ease, lessons). 
+
+```{r,eval=FALSE}
+
+your code here 
+
+```
+
+#Question 2 
+Since "implementation" is a categorical variable, we want to report the total count of "yes" and "no". Can you find a way to produce a contingency table that calculate counts for categorical variables ? 
+
+```{r,eval=FALSE}
+
+your code here 
+
+```
+
+
+#Question 3
+Visualize the relationship between "Advantage" and "Lessons". 
+There are so many ways to visualize data points, you can pick and choose any method. 
+
+
+```{r,eval=FALSE}
+
+your code here 
+
+```
+
+## Optional 
+Do you want to see which variables predict the number of lessons teachers were willing to teach ? In other words, try to run a regression model with "lessons" as the dependent variable, and other varialbes (whichever) as the independent variables. There's a ton of tutorials and discussion forums that can guide your analysis. Remember, Google is your best friend ! 
