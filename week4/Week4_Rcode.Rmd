@@ -1,0 +1,158 @@
+---
+title: "Week4_Rcode"
+author: "JS"
+date: "12/14/2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## This session covers basics of network analysis and visualization with the igraph package.
+## igraph is a collection of R functions to explore, create, manipulate and visualize graphs. 
+## Let's first install the latest version of igraph 
+
+```{r, eval=false}
+install.packages("igraph")
+library(igraph)
+```
+
+## We will use the datasets and tutorials created by Ognyanova. 
+## Download the two files "Media_nodes.csv" and "Media_edges.csv" from github. 
+## Don't forget to set your working directory. 
+## You need to replace the following code with your own path to your file location 
+
+setwd("/Users/jieun.shin/Documents/Teaching/SNA/Week4_centrality")
+
+## "Media_nodes.csv" contains characteristics of each media organizations 
+## "Media_edges.csv"" contains relationships among media organizations. 
+
+```{r, eval=false}
+nodes <-read.csv(file="Media_nodes.csv", header=TRUE, sep="\t")
+links <-read.csv(file="Media_edges.csv", header=TRUE, sep="\t")
+```
+
+## Since "links"" datset is an edgelist, we need to convert it to a network object. 
+## igraph has a convenient function called "graph_from_data_frame" to do this task 
+
+```{r, eval=false}
+net <- graph_from_data_frame(d=links, vertices=nodes, directed=T)
+net
+```
+
+
+## Check basic network measures: size, density, centrliazation, etc 
+
+```{r, eval=false}
+vcount(net)
+ecount(net)
+graph.density(net)
+centr_degree(net)
+```
+
+## Let's make our first attempt to plot it 
+```{r, eval=false}
+plot(net)
+```
+
+## The visualization shows self-loops (relationship with oneself). 
+## We will remove the loops in the graph 
+```{r, eval=false}
+net <- simplify(net)
+```
+
+## See if it worked 
+```{r, eval=false}
+plot(net)
+```
+
+## The graph looks too crowded. We can do better. 
+
+```{r, eval=false}
+plot(net, edge.arrow.size=.4, vertex.label=NA)
+```
+
+## A few more adjustments 
+
+```{r, eval=false}
+plot(net, edge.arrow.size=.2, edge.color="orange",
+vertex.color="orange", vertex.frame.color="#ffffff",
+vertex.label=V(net)$media, vertex.label.color="black")
+```
+
+## Examine indegree centrality scores 
+```{r, eval=false}
+degree(net, mode="in")
+```
+
+## Plot network based on this indegree measure. 
+##Let's make the node size proportional to indegree. We will also remove vertex lables 
+```{r, eval=false}
+V(net)$indegree <-degree(net, mode="in")
+plot(net, vertex.size=V(net)$indegree)
+```
+
+## We need to make vertex sizes a bit bigger and arrows smaller 
+```{r, eval=false}
+plot(net, vertex.size=V(net)$indegree*5, vertex.label=NA, edge.arrow.size=.2)
+```
+
+## If you want to print the vertex's real name, use the code below. 
+## Set each label's text size to be .7 
+```{r, eval=false}
+plot(net, vertex.size=V(net)$indegree*5, vertex.label=V(net)$media, vertex.label.cex=.7, edge.arrow.size=.2)
+```
+
+## To color the nodes based on their attributes, first you need to learn the logic 
+## Let's color them based on media.type
+```{r, eval=false}
+V(net)$color <-"black"
+V(net)$color <- ifelse(V(net)$media.type==1, "blue", V(net)$color)
+V(net)$color <- ifelse(V(net)$media.type==2, "red", V(net)$color)
+V(net)$color <- ifelse(V(net)$media.type==3, "orange", V(net)$color)
+plot(net, vertex.size=V(net)$indegree*5, vertex.color=V(net)$color, vertex.label=V(net)$media, vertex.label.cex=.7, edge.arrow.size=.2)
+```
+
+## There are other ways to generate the colors 
+```{r, eval=false}
+colrs <-c("blue", "red", "orange")
+V(net)$color <- colrs[V(net)$media.type]
+
+plot(net, vertex.size=V(net)$indegree*5, vertex.color=V(net)$color, 
+vertex.label=NA, vertex.label.cex=.7, edge.arrow.size=.2, edge.width=E(net)$width, main="Network of Media Organizations")
+```
+
+## Set edge width based edge weight. We will get rid of vertex labels 
+```{r, eval=false}
+V(net)$color <-"black"
+V(net)$color <- ifelse(V(net)$media.type==1, "blue", V(net)$color)
+V(net)$color <- ifelse(V(net)$media.type==2, "red", V(net)$color)
+V(net)$color <- ifelse(V(net)$media.type==3, "orange", V(net)$color)
+E(net)$width <- E(net)$weight/6
+
+plot(net, vertex.size=V(net)$indegree*5, vertex.color=V(net)$color, 
+vertex.label=NA, vertex.label.cex=.7, edge.arrow.size=.2, edge.width=E(net)$width)
+```
+
+## Add a title 
+```{r, eval=false}
+V(net)$color <-"black"
+V(net)$color <- ifelse(V(net)$media.type==1, "blue", V(net)$color)
+V(net)$color <- ifelse(V(net)$media.type==2, "red", V(net)$color)
+V(net)$color <- ifelse(V(net)$media.type==3, "orange", V(net)$color)
+E(net)$width <- E(net)$weight/6
+
+plot(net, vertex.size=V(net)$indegree*5, vertex.color=V(net)$color, 
+vertex.label=NA, vertex.label.cex=.7, edge.arrow.size=.2, edge.width=E(net)$width, main="Network of Media Organizations")
+```
+
+## Add a legend
+```{r, eval=false}
+colrs <-c("blue", "red", "orange")
+V(net)$color <- colrs[V(net)$media.type]
+
+plot(net, vertex.size=V(net)$indegree*5, vertex.color=V(net)$color, 
+vertex.label=NA, vertex.label.cex=.7, edge.arrow.size=.2, edge.width=E(net)$width, main="Network of Media Organizations")
+legend("bottomright", c("Newspaper","Television","Online News"), col=colrs, pch=16)
+```

@@ -1,0 +1,40 @@
+---
+title: "Week4_lab"
+author: "JS"
+date: "12/16/2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## This lab uses the same two datasets we used in class ("Media_nodes.csv" and "Media_edges.csv")
+## Import the datsets and convert them into a network object using igraph 
+
+```{r, eval=false}
+
+
+```
+
+## Compute each node's outdegree centrality scores 
+
+```{r, eval=false}
+
+
+```
+
+## Visualize the network with the node size proportional to outdegree scores 
+```{r, eval=false}
+
+
+```
+
+## Display the nodes' media types (tv, newspaper, etc) 
+## rather than their organization's names (NY Times, ABC, etc)
+
+```{r, eval=false}
+
+
+```
+
