@@ -1,0 +1,69 @@
+---
+title: "week3_rcode"
+author: "JS"
+date: "12/12/2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Let's install package 'egor'
+## This R package simplifies many common ego-network analysis tasks
+## More information can be found here https://cran.r-project.org/web/packages/egor/egor.pdf
+
+```{r, eval=false}
+install.packages("egor")
+library(egor)
+```
+
+# An "egor" object contains all data levels associated with ego-centered network analysis such as (1)ego, (2)alter, (3) alter-alter ties. By providing the "egor()" function, we construct an egor object. The data should contain the three types of data levels. We can take a look at the examples provided by the egor package. Pay attention to the ID variables connecting the levels with each other. 
+
+
+```{r, eval=false}
+data("alters32")
+data("egos32")
+data("edges32")
+```
+
+#Let's combine the data so that we can create an egor object. 
+
+```{r, eval=false}
+e1 <-egor(alters.df=alters32, egos.df=egos32, aaties=edges32, 
+          ID.vars=list(ego="egoID", alter ="alterID", source="Source", target="Target"))
+
+e1
+```
+
+#use the following functions to analyse the networks 
+
+```{r, eval=false}
+summary(e1)
+```
+
+
+```{r, eval=false}
+ego_density(e1)
+```
+
+# diversity 
+
+```{r, eval=false}
+alts_diversity_entropy(e1, "alter.age")
+```
+
+#Ego-Alter Homophily (EI-Index)
+
+```{r, eval=false}
+comp_ei(e1, "alter.age", "age")
+```
+
+
+## visualization 
+```{r, eval=false}
+data(egor32)
+egor_vis_app(egor32)
+```
+
+
